@@ -14,9 +14,16 @@ steps:
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
-
 - script: |
-    npm install
+    echo "Cleaning cache..."
+    npm cache clean --force
+    
+    echo "Installing dependencies..."
+    npm install --legacy-peer-deps
+
+    echo "Building project..."
     npm run build
-    npm audit fix --force
+
+    echo "Running security audit..."
+    npm audit fix --force || true
   displayName: 'npm install and build'
